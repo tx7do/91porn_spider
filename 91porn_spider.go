@@ -22,6 +22,18 @@ const (
 	USE_PROXY bool = true ///< 是否启用代理
 )
 
+/**
+* 采集内容
+ */
+type Content struct {
+	title       string ///< 标题
+	desc        string ///< 描述
+	content_url string ///< 内容入口地址
+	cover_url   string ///< 封面地址
+	thumb_url   string ///< 缩略图地址
+	video_url   string ///< 视频地址
+}
+
 /// 区域随机整型数字
 func random_int(min, max int) int {
 	randNum := rand.Intn(max-min) + min
@@ -57,18 +69,6 @@ func convertToString(src string, srcCode string, tagCode string) string {
 	_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
 	result := string(cdata)
 	return result
-}
-
-/**
-* 采集内容
- */
-type Content struct {
-	title       string ///< 标题
-	desc        string ///< 描述
-	content_url string ///< 内容入口地址
-	cover_url   string ///< 封面地址
-	thumb_url   string ///< 缩略图地址
-	video_url   string ///< 视频地址
 }
 
 //根据url 创建http 请求的 request
@@ -229,7 +229,7 @@ func getContent(url string, content *Content) {
 /// 获取远端服务器的列表页面
 func getPage(page_url string, contents *[]Content) {
 	// 获取远程服务器的页面
-	doc, err := getHtml(page_url, true)
+	doc, err := getHtml(page_url, USE_PROXY)
 	if err != nil {
 		log.Fatal(err)
 	}
